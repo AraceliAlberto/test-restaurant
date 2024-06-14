@@ -73,7 +73,7 @@
         "summary": "Obtiene la lista de todos los restaurantes",
         "tags": [
           "Admin",
-          "Customer"
+          "customer"
         ],
         "security": [
           {
@@ -134,7 +134,7 @@
         "summary": "Obtiene un restaurante específico por su ID",
         "tags": [
           "Admin",
-          "Customer"
+          "customer"
         ],
         "security": [
           {
@@ -247,7 +247,7 @@
         "summary": "Obtiene la lista de reservas del usuario actual",
         "tags": [
           "Admin",
-          "Customer"
+          "customer"
         ],
         "security": [
           {
@@ -284,7 +284,7 @@
         "summary": "Crea una nueva reserva para el usuario actual",
         "tags": [
           "Admin",
-          "Customer"
+          "customer"
         ],
         "security": [
           {
@@ -330,7 +330,7 @@
         "summary": "Obtiene una reserva específica por su ID para el usuario actual",
         "tags": [
           "Admin",
-          "Customer"
+          "customer"
         ],
         "security": [
           {
@@ -372,7 +372,7 @@
         "summary": "Actualiza una reserva existente por su ID para el usuario actual",
         "tags": [
           "Admin",
-          "Customer"
+          "customer"
         ],
         "security": [
           {
@@ -424,7 +424,7 @@
         "summary": "Elimina una reserva existente por su ID para el usuario actual",
         "tags": [
           "Admin",
-          "Customer"
+          "customer"
         ],
         "security": [
           {
@@ -465,6 +465,7 @@
         "bearerFormat": "JWT"
       }
     },
+
     "schemas": {
       "User": {
         "type": "object",
@@ -599,7 +600,7 @@
       "description": "Operaciones para administradores"
     },
     {
-      "name": "Customer",
+      "name": "customer",
       "description": "Operaciones para clientes"
     },
     {

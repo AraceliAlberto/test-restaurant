@@ -22,7 +22,7 @@ def test_client():
 def admin_auth_headers():
     with app.app_context():
         access_token = create_access_token(
-            identity={"username": "testuser", "role": "admin"}
+            identity={"username": "testuser", "role": '["admin"]'}
         )
         headers = {"Authorization": f"Bearer {access_token}"}
         return headers
@@ -32,7 +32,7 @@ def admin_auth_headers():
 def customer_auth_headers():
     with app.app_context():
         access_token = create_access_token(
-            identity={"username": "user", "role": "customer"}
+            identity={"username": "user", "role": '["customer"]'}
         )
         headers = {"Authorization": f"Bearer {access_token}"}
         return headers
