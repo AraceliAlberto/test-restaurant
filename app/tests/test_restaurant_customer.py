@@ -1,9 +1,11 @@
+#1
 def test_customer_get_restaurants(test_client, customer_auth_headers):
     response = test_client.get("/api/restaurants", headers=customer_auth_headers)
     assert response.status_code == 200
     assert isinstance(response.json, list)
 
-def test_customer_get_restaurant(test_client, customer_auth_headers):
+#2
+def test_customer_get_restaurant(test_client, customer_auth_headers, admin_auth_headers):
     # Primero crea un restaurante como admin para que el cliente pueda verlo
     admin_data = {
         "name": "Burger Palace",
@@ -13,7 +15,7 @@ def test_customer_get_restaurant(test_client, customer_auth_headers):
         "description": "The best burgers in town.",
         "rating": 4.2
     }
-    admin_response = test_client.post("/api/restaurants", json=admin_data, headers=customer_auth_headers)
+    admin_response = test_client.post("/api/restaurants", json=admin_data, headers=admin_auth_headers)
     assert admin_response.status_code == 201
     restaurant_id = admin_response.json["id"]
 
@@ -27,11 +29,13 @@ def test_customer_get_restaurant(test_client, customer_auth_headers):
     assert response.json["description"] == "The best burgers in town."
     assert response.json["rating"] == 4.2
 
+#3
 def test_customer_get_nonexistent_restaurant(test_client, customer_auth_headers):
     response = test_client.get("/api/restaurants/999", headers=customer_auth_headers)
     assert response.status_code == 404
     assert response.json["error"] == "Restaurante no encontrado"
 
+#4
 def test_customer_create_restaurant(test_client, customer_auth_headers):
     data = {
         "name": "Gourmet Plaza",
@@ -45,6 +49,7 @@ def test_customer_create_restaurant(test_client, customer_auth_headers):
     assert response.status_code == 403
     assert response.json["error"] == "No tiene permiso para realizar esta acción"
 
+#5
 def test_customer_update_restaurant(test_client, customer_auth_headers):
     update_data = {
         "name": "Pizza Haven",
@@ -58,6 +63,7 @@ def test_customer_update_restaurant(test_client, customer_auth_headers):
     assert response.status_code == 403
     assert response.json["error"] == "No tiene permiso para realizar esta acción"
 
+#6
 def test_customer_delete_restaurant(test_client, customer_auth_headers):
     response = test_client.delete("/api/restaurants/1", headers=customer_auth_headers)
     assert response.status_code == 403

@@ -22,24 +22,21 @@ API_URL = "/static/swagger.json"
 swagger_ui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL, API_URL, config={"app_name": "Examen Final Web III - API"}
 )
+
 app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
-
-# Configuración de la base de datos
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///platform.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///restaurant.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Inicializa la base de datos
 db.init_app(app)
-
-# Inicializa la extensión JWTManager
 jwt = JWTManager(app)
 
+app.register_blueprint(restaurant_bp, url_prefix="/api")
+app.register_blueprint(reservation_bp, url_prefix="/api")
+app.register_blueprint(user_bp, url_prefix="/api")
 
-# Crea las tablas si no existen
 with app.app_context():
     db.create_all()
 
-# Ejecuta la aplicación
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)

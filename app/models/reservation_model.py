@@ -1,4 +1,5 @@
 from app.database import db
+from datetime import datetime
 
 class Reservation(db.Model):
     __tablename__ = "reservations"
@@ -6,7 +7,7 @@ class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, unique=True, nullable=False)
     restaurant_id = db.Column(db.Integer, unique=True, nullable=False)
-    reservation_date = db.Column(db.Date, nullable=False)
+    reservation_date = db.Column(db.DateTime, nullable=False)
     num_guest = db.Column(db.Integer, nullable=False)
     special_requests = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(100), nullable=False)
@@ -41,3 +42,11 @@ class Reservation(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return Reservation.query.all()
+
+    @staticmethod
+    def get_by_id(id):
+        return db.session.get(Reservation, id)

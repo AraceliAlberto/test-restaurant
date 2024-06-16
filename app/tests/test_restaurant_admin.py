@@ -1,8 +1,10 @@
+#1
 def test_get_restaurants(test_client, admin_auth_headers):
     response = test_client.get("/api/restaurants", headers=admin_auth_headers)
     assert response.status_code == 200
     assert response.json == []
 
+#2
 def test_create_restaurant(test_client, admin_auth_headers):
     data = {
         "name": "Gourmet Plaza",
@@ -21,6 +23,7 @@ def test_create_restaurant(test_client, admin_auth_headers):
     assert response.json["description"] == "A fine dining experience."
     assert response.json["rating"] == 4.5
 
+#3
 def test_create_restaurant_with_zero_rating(test_client, admin_auth_headers):
     data = {
         "name": "Budget Bites",
@@ -39,6 +42,7 @@ def test_create_restaurant_with_zero_rating(test_client, admin_auth_headers):
     assert response.json["description"] == "Affordable meals for everyone."
     assert response.json["rating"] == 0.0
 
+#4
 def test_get_restaurant(test_client, admin_auth_headers):
     # Primero crea un restaurante
     data = {
@@ -63,17 +67,20 @@ def test_get_restaurant(test_client, admin_auth_headers):
     assert response.json["description"] == "The best burgers in town."
     assert response.json["rating"] == 4.2
 
+#5
 def test_get_nonexistent_restaurant(test_client, admin_auth_headers):
     response = test_client.get("/api/restaurants/999", headers=admin_auth_headers)
     assert response.status_code == 404
     assert response.json["error"] == "Restaurante no encontrado"
 
+#6
 def test_create_restaurant_invalid_data(test_client, admin_auth_headers):
     data = {"name": "Sushi Place"}  # Faltan address, city, phone, description y rating
     response = test_client.post("/api/restaurants", json=data, headers=admin_auth_headers)
     assert response.status_code == 400
     assert response.json["error"] == "Faltan datos requeridos"
 
+#7
 def test_update_restaurant(test_client, admin_auth_headers):
     # Primero crea un restaurante
     data = {
@@ -108,6 +115,7 @@ def test_update_restaurant(test_client, admin_auth_headers):
     assert response.json["description"] == "The best pizza in town."
     assert response.json["rating"] == 4.5
 
+#8
 def test_update_nonexistent_restaurant(test_client, admin_auth_headers):
     update_data = {
         "name": "Steakhouse",
@@ -123,6 +131,7 @@ def test_update_nonexistent_restaurant(test_client, admin_auth_headers):
     assert response.status_code == 404
     assert response.json["error"] == "Restaurante no encontrado"
 
+#9
 def test_delete_restaurant(test_client, admin_auth_headers):
     # Primero crea un restaurante
     data = {
@@ -148,6 +157,7 @@ def test_delete_restaurant(test_client, admin_auth_headers):
     assert response.status_code == 404
     assert response.json["error"] == "Restaurante no encontrado"
 
+#10
 def test_delete_nonexistent_restaurant(test_client, admin_auth_headers):
     response = test_client.delete("/api/restaurants/999", headers=admin_auth_headers)
     assert response.status_code == 404

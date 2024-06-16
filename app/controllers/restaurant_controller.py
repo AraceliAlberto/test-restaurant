@@ -10,16 +10,17 @@ restaurant_bp = Blueprint("restaurant", __name__)
 @restaurant_bp.route("/restaurants", methods=["GET"])
 @jwt_required
 def get_restaurants():
-    restaurants = restaurant.get_all()
+    restaurants = Restaurant.get_all()
     return jsonify(render_restaurants_list(restaurants))
 
 @restaurant_bp.route("/restaurants/<int:id>", methods=["GET"])
 @jwt_required
+@role_required(role=["admin", "customer"])
 def get_restaurant(id):
-    restaurant = restaurant.get_by_id(id)
+    restaurant = Restaurant.get_by_id(id)
     if restaurant:
         return jsonify(render_restaurant_detail(restaurant))
-    return jsonify({"error": "restaurant no encontrado"}), 404
+    return jsonify({"error": "Restaurante no encontrado"}), 404
 
 
 @restaurant_bp.route("/restaurants", methods=["POST"])
@@ -34,21 +35,21 @@ def post_restaurant():
     description = data.get("description")
     rating = data.get("rating")
 
-    if not name or not address or not city or not phone or not description or not rating:
+    if not name or not address or not city or not phone or not description or rating is None:
         return jsonify({"error": "Faltan datos requeridos"}), 400
 
-    restaurant = restaurant(name=name, address=address, city=city, phone=phone, description=description, rating=rating)
-    restaurant.save()
-    return jsonify(render_restaurant_detail(restaurant)), 201
+    new_restaurant = Restaurant(name=name, address=address, city=city, phone=phone, description=description, rating=rating)
+    new_restaurant.save()
+    return jsonify(render_restaurant_detail(new_restaurant)), 201
 
 @restaurant_bp.route("/restaurants/<int:id>", methods=["PUT"])
 @jwt_required
 @role_required(role=["admin"])
 def update_restaurant(id):
-    restaurants = restaurant.get_by_id(id)
+    restaurants = Restaurant.get_by_id(id)
 
     if not restaurants:
-        return jsonify({"error": "restaurant no encontrado"}), 404
+        return jsonify({"error": "Restaurante no encontrado"}), 404
 
     data = request.json
     
@@ -72,9 +73,9 @@ def update_restaurant(id):
 @jwt_required
 @role_required(role=["admin"])
 def delete_restaurant(id):
-    restaurants = restaurant.get_by_id(id)
+    restaurants = Restaurant.get_by_id(id)
     if not restaurants:
-        return jsonify({"error": "restaurant no encontrado"}), 404
+        return jsonify({"error": "Restaurante no encontrado"}), 404
 
     restaurants.delete()
     return "", 204

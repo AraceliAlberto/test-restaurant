@@ -26,7 +26,6 @@ def test_register_duplicate_user(test_client, new_customer):
 
 #3
 def test_login_user(test_client, new_customer):
-    # Ahora intentar iniciar sesión
     login_credentials = {
         "email": new_customer["email"],
         "password": new_customer["password"],

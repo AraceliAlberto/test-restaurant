@@ -41,3 +41,11 @@ class Restaurant(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return Restaurant.query.all()
+
+    @staticmethod
+    def get_by_id(id):
+        return db.session.get(Restaurant, id)
